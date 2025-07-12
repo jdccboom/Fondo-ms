@@ -3,13 +3,14 @@ package com.bts.model.common.exception;
 import lombok.Getter;
 
 @Getter
-public enum codeError {
+public enum CodeError {
     FOUND(302),
-    NOT_FOUND(404);
+    NOT_FOUND(404),
+    INTERNAL_SERVER_ERROR(500);
 
     private final Integer code;
 
-    codeError(Integer code) {
+    CodeError(Integer code) {
         this.code = code;
     }
 }

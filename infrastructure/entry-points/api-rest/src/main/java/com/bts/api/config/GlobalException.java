@@ -38,7 +38,7 @@ public class GlobalException {
 
     @ExceptionHandler(ErrorException.class)
     public ResponseEntity<MessageDTO<String>> errorException(ErrorException e){
-        return ResponseEntity.status(e.getCode()).body(new MessageDTO<>(e.getMessage())
+        return ResponseEntity.status(e.getCode().getCode()).body(new MessageDTO<>(e.getMessage())
         );
     }
 
