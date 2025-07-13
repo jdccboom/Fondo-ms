@@ -1,7 +1,7 @@
 package com.bts.usecase.auth;
 
 import com.bts.model.common.exception.ErrorException;
-import com.bts.model.common.exception.codeError;
+import com.bts.model.common.exception.CodeError;
 import com.bts.model.common.jwt.JwtUtilGateway;
 import com.bts.model.usuario.Usuario;
 import com.bts.model.usuario.gateways.UsuarioGateway;
@@ -23,7 +23,7 @@ public class AuthenticateUseCase {
         boolean existingUser = this.usuarioGateway.existByEmail(usuario.getEmail());
 
         if (existingUser) {
-            throw new ErrorException("El correo ya existe", codeError.FOUND.getCode());
+            throw new ErrorException("El correo ya existe", CodeError.FOUND);
         }
 
         return this.usuarioGateway.register(usuario);
@@ -33,13 +33,13 @@ public class AuthenticateUseCase {
         boolean existingUser = this.usuarioGateway.existByEmail(email);
 
         if (!existingUser)
-            throw new ErrorException("El usuario no fue encontrado", codeError.NOT_FOUND.getCode());
+            throw new ErrorException("El usuario no fue encontrado", CodeError.NOT_FOUND);
 
         Usuario usuario = this.usuarioGateway.validatePassword(email, password);
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("rol", List.of(usuario.getRole().getName()));
+        map.put("rol", List.of(usuario.getRole()));
         map.put("id", usuario.getId());
 
         return jwtUtil.generateToken(usuario.getEmail(), map);

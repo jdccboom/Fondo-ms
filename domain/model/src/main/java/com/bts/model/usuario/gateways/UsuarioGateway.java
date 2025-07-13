@@ -13,4 +13,6 @@ public interface UsuarioGateway {
 
     boolean existByEmail(String email);
 
+    Usuario findById(String id);
+
 }

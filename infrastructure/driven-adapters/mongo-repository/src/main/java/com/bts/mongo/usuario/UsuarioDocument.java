@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,8 +24,8 @@ public class UsuarioDocument {
     @Id
     private String id;
 
-    @Field("nombre")
-    private String nombre;
+    @Field("name")
+    private String name;
 
     @Field("email")
     private String email;
@@ -33,12 +34,18 @@ public class UsuarioDocument {
     private String password;
 
     @Field("role")
-    private Role role;
+    private String role;
 
     @Field("createdAt")
     private LocalDateTime createdAt;
 
     @Field("active")
     private Boolean active;
+
+    @Field("availableBalance")
+    private BigDecimal availableBalance;
+
+    @Field("notificationPreference")
+    private String notificationPreference;
 
 }
