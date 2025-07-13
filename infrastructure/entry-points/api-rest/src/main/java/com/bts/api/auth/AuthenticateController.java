@@ -5,6 +5,7 @@ import com.bts.api.auth.requests.RegisterRequest;
 import com.bts.api.auth.response.LoginResponse;
 import com.bts.api.auth.response.UserDetail;
 import com.bts.model.usuario.Role;
+import com.bts.model.usuario.RoleType;
 import com.bts.model.usuario.Usuario;
 import com.bts.usecase.auth.AuthenticateUseCase;
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class AuthenticateController {
                 .name(request.name())
                 .email(request.email())
                 .password(request.password())
-                .role(Role.builder().id(2L).build())
+                .role(RoleType.Client.getName())
                 .build()
         );
 

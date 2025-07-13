@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 public class FondoDocument {
 
     @Id
+    @Field("_id")
     private String fondoId;
 
     @Field("nombre")

@@ -24,7 +24,7 @@ public class MailGatewayAdapter implements MailGateway {
                 helper.setSubject(emailDto.getSubject());
                 helper.setText(emailDto.getBody(), true);
                 helper.setTo(emailDto.getAddressee());
-                helper.setFrom("no_reply@dominio.com");
+                helper.setFrom("no_reply@BTG_Pactual.com");
                 javaMailSender.send(message);
 
             } catch (Exception e) {

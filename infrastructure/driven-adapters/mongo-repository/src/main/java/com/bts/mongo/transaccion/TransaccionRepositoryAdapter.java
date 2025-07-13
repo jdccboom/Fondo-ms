@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Slf4j
 @Repository
 public class TransaccionRepositoryAdapter extends AdapterOperations<Transaccion, TransaccionDocument, String, TransaccionDBRepository>
@@ -22,6 +24,11 @@ public class TransaccionRepositoryAdapter extends AdapterOperations<Transaccion,
 
     public TransaccionRepositoryAdapter(TransaccionDBRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Transaccion.class));
+    }
+
+    @Override
+    public List<Transaccion> findByClienteIdAndFondoId(String clienteId, String fondoId) {
+        return repository.findByClienteIdAndFondoId(clienteId, fondoId);
     }
 
     @Override

@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class ErrorException extends Exception {
 
-    private final codeError code;
+    private final CodeError code;
 
-    public ErrorException(String message, codeError code) {
+    public ErrorException(String message, CodeError code) {
         super(message);
         this.code = code;
     }

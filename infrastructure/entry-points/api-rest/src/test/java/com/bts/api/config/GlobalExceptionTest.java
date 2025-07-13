@@ -3,7 +3,7 @@ package com.bts.api.config;
 import com.bts.model.common.MessageDTO;
 import com.bts.model.common.ValidationDTO;
 import com.bts.model.common.exception.ErrorException;
-import com.bts.model.common.exception.codeError;
+import com.bts.model.common.exception.CodeError;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class GlobalExceptionTest {
     }
     @Test
     public void errorExceptionTest(){
-        ErrorException error = new ErrorException("Not Found" , codeError.NOT_FOUND);
+        ErrorException error = new ErrorException("Not Found" , CodeError.NOT_FOUND);
         ResponseEntity<MessageDTO<String>> response = globalException.errorException(error);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class Usuario {
 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -23,9 +24,13 @@ public class Usuario {
 
     private String password;
 
-    private Role role;
+    private String role;
 
     private LocalDateTime createdAt;
 
     private Boolean active;
+
+    private BigDecimal availableBalance;
+
+    private String notificationPreference;
 }
