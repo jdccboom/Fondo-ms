@@ -27,4 +27,5 @@ public class Transaccion {
     private BigDecimal monto;
 
     private LocalDateTime fecha;
+
 }

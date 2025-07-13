@@ -23,7 +23,7 @@ public class AuthenticateUseCase {
         boolean existingUser = this.usuarioGateway.existByEmail(usuario.getEmail());
 
         if (existingUser) {
-            throw new ErrorException("El correo ya existe", codeError.FOUND.getCode());
+            throw new ErrorException("El correo ya existe", codeError.FOUND);
         }
 
         return this.usuarioGateway.register(usuario);
@@ -33,7 +33,7 @@ public class AuthenticateUseCase {
         boolean existingUser = this.usuarioGateway.existByEmail(email);
 
         if (!existingUser)
-            throw new ErrorException("El usuario no fue encontrado", codeError.NOT_FOUND.getCode());
+            throw new ErrorException("El usuario no fue encontrado", codeError.NOT_FOUND);
 
         Usuario usuario = this.usuarioGateway.validatePassword(email, password);
 
