@@ -26,7 +26,7 @@ public class NotificacionDocument {
     @Field("tipo")
     private String tipo;
 
-    @Field("mensaje")
-    private String mensaje;
+    @Field("fondoId")
+    private String fondoId;
 
 }

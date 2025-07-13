@@ -2,15 +2,11 @@ package com.bts.api.fondos;
 
 import com.bts.api.fondos.requests.CancelarFondoRequest;
 import com.bts.api.fondos.requests.SuscribirFondoRequest;
-import com.bts.model.common.exception.ErrorException;
-import com.bts.model.fondo.Fondo;
 import com.bts.model.transaccion.TipoTransaccion;
 import com.bts.model.transaccion.Transaccion;
 import com.bts.usecase.fondos.FondosUseCase;
-import io.micrometer.core.ipc.http.HttpSender;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
