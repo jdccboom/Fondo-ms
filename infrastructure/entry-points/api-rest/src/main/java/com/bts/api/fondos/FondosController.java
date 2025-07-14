@@ -2,11 +2,13 @@ package com.bts.api.fondos;
 
 import com.bts.api.fondos.requests.CancelarFondoRequest;
 import com.bts.api.fondos.requests.SuscribirFondoRequest;
+import com.bts.model.common.PageRequests;
 import com.bts.model.common.exception.ErrorException;
 import com.bts.model.fondo.Fondo;
 import com.bts.model.transaccion.TipoTransaccion;
 import com.bts.model.transaccion.Transaccion;
 import com.bts.usecase.fondos.FondosUseCase;
+import com.bts.usecase.transaccion.TransaccionUseCase;
 import io.micrometer.core.ipc.http.HttpSender;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.time.LocalDateTime;
 public class FondosController {
 
     private final FondosUseCase fondosUseCase;
+    private final TransaccionUseCase transaccionUseCase;
 
     @PostMapping("/suscribir")
     public ResponseEntity<?> suscribir(@Valid @RequestBody SuscribirFondoRequest suscribirFondoRequest) throws Exception {
@@ -53,5 +56,19 @@ public class FondosController {
         return ResponseEntity.ok(fondosUseCase.obtenerFondos());
     }
 
+    @GetMapping("/historial/{id}")
+    public ResponseEntity<?> obtenerFondosHistorial(@PathVariable("id") String id,
+                                                    @RequestParam(name = "page", defaultValue = "0") int page,
+                                                    @RequestParam(name = "size", defaultValue = "10") int size,
+                                                    @RequestParam(name = "sort", required = false) String sort) throws Exception {
+
+        PageRequests pageRequests = PageRequests.builder()
+                .page(page)
+                .size(size)
+                .sort(sort)
+                .build();
+
+        return ResponseEntity.ok(transaccionUseCase.obtenerTransaccionesClienteId(id, pageRequests));
+    }
 
 }

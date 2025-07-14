@@ -39,7 +39,7 @@ public class AuthenticateUseCase {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("rol", List.of(usuario.getRole()));
+        map.put("rol", List.of(usuario.getRol()));
         map.put("id", usuario.getId());
 
         return jwtUtil.generateToken(usuario.getEmail(), map);

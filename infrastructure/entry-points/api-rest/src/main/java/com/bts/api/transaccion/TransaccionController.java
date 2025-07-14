@@ -22,7 +22,7 @@ public class TransaccionController {
     private final TransaccionUseCase transaccionUseCase;
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> obtenerTransacciones(
             @RequestParam(name = "transaccionId", required = false) String transaccionId,
             @RequestParam(name = "clienteId", required = false) String clienteId,

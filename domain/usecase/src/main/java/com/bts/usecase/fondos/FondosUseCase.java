@@ -33,8 +33,8 @@ public class FondosUseCase {
 
         Fondo fondo = buscarFondoPorId(transaccion.getFondoId());
 
-        if (usuario.getAvailableBalance().compareTo(fondo.getMontoMinimo()) < 0 ||
-                transaccion.getMonto().compareTo(usuario.getAvailableBalance()) > 0) {
+        if (usuario.getSaldoDisponible().compareTo(fondo.getMontoMinimo()) < 0 ||
+                transaccion.getMonto().compareTo(usuario.getSaldoDisponible()) > 0) {
             String mensaje = String.format(
                     "No tiene saldo disponible para vincularse al fondo %s", fondo.getNombre()
             );
@@ -57,7 +57,7 @@ public class FondosUseCase {
 
         if(TipoTransaccion.CANCELACION.getTipo().equals(ultimaTransaccion.getTipo())) {
             log.severe("Error el usuario no se encuentra incrito en el fondo");
-            throw new ErrorException("El usuario: "+usuario.getName()+" No esta Incrito en el fondo", CodeError.INTERNAL_SERVER_ERROR);
+            throw new ErrorException("El usuario: "+usuario.getNombre()+" No esta Incrito en el fondo", CodeError.INTERNAL_SERVER_ERROR);
         }
         transaccion.setMonto(ultimaTransaccion.getMonto());
         aumentarSaldoDisponibleUsuario(usuario, transaccion);
@@ -89,16 +89,16 @@ public class FondosUseCase {
     }
 
     private void disminuirSaldoDisponibleUsuario(Usuario usuarioActual, Transaccion transaccion) throws ErrorException {
-        log.info("Inicia disminucion de saldo disponible para el usuario:" + usuarioActual.getName());
-        BigDecimal saldoDisponible = usuarioActual.getAvailableBalance().subtract(transaccion.getMonto());
-        usuarioActual.setAvailableBalance(saldoDisponible);
+        log.info("Inicia disminucion de saldo disponible para el usuario:" + usuarioActual.getNombre());
+        BigDecimal saldoDisponible = usuarioActual.getSaldoDisponible().subtract(transaccion.getMonto());
+        usuarioActual.setSaldoDisponible(saldoDisponible);
         actualizarUsuario(usuarioActual);
     }
 
     private void aumentarSaldoDisponibleUsuario(Usuario usuarioActual, Transaccion transaccion) throws ErrorException {
-        log.info("Inicia aumento de saldo disponible para el usuario:" + usuarioActual.getName());
-        BigDecimal saldoDisponible = usuarioActual.getAvailableBalance().add(transaccion.getMonto());
-        usuarioActual.setAvailableBalance(saldoDisponible);
+        log.info("Inicia aumento de saldo disponible para el usuario:" + usuarioActual.getNombre());
+        BigDecimal saldoDisponible = usuarioActual.getSaldoDisponible().add(transaccion.getMonto());
+        usuarioActual.setSaldoDisponible(saldoDisponible);
         actualizarUsuario(usuarioActual);
     }
 
@@ -115,7 +115,7 @@ public class FondosUseCase {
         EmailDto email = new EmailDto(
                 "Suscripcion exitosa",
                 usuario.getEmail(),
-                usuario.getName(),
+                usuario.getNombre(),
                 fondo.getNombre(),
                 true
         );
@@ -126,7 +126,7 @@ public class FondosUseCase {
                 .subject("Suscripcion Cancelada Exitosamente")
                 .addressee(usuario.getEmail())
                 .fondoName(fondo.getNombre())
-                .userName(usuario.getName())
+                .userName(usuario.getNombre())
                 .isSuscripcion(false)
                 .build();
         mailGateway.sendMail(email);

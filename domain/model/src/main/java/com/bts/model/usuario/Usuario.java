@@ -18,19 +18,19 @@ public class Usuario {
 
     private String id;
 
-    private String name;
+    private String nombre;
 
     private String email;
 
     private String password;
 
-    private String role;
+    private String rol;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime fechaCreacion;
 
-    private Boolean active;
+    private Boolean activo;
 
-    private BigDecimal availableBalance;
+    private BigDecimal saldoDisponible;
 
-    private String notificationPreference;
+    private String notificacionPreferencia;
 }

@@ -7,7 +7,6 @@ import com.bts.model.transaccion.Transaccion;
 import java.util.List;
 
 public interface FondoGateway {
-    Fondo save(Fondo fondo);
     Fondo findById(String id) throws ErrorException;
     List<Fondo> findAll();
 }

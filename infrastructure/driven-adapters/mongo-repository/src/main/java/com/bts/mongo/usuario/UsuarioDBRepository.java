@@ -4,4 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 public interface UsuarioDBRepository extends MongoRepository<UsuarioDocument, String> , QueryByExampleExecutor<UsuarioDocument> {
+    Boolean existsByEmailAndActiveTrue(String email);
+
+    UsuarioDocument findByEmailAndActiveTrue(String email);
 }

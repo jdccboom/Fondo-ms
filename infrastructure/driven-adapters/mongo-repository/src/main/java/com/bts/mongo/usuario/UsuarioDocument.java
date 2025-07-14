@@ -1,6 +1,5 @@
 package com.bts.mongo.usuario;
 
-import com.bts.model.usuario.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
