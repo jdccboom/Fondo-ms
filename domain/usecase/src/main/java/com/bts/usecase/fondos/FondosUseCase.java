@@ -6,6 +6,8 @@ import com.bts.model.fondo.Fondo;
 import com.bts.model.fondo.gateway.FondoGateway;
 import com.bts.model.mail.EmailDto;
 import com.bts.model.mail.MailGateway;
+import com.bts.model.notificacion.Notificacion;
+import com.bts.model.notificacion.gateway.NotificacionGateway;
 import com.bts.model.transaccion.TipoTransaccion;
 import com.bts.model.transaccion.Transaccion;
 import com.bts.model.transaccion.gateway.TransaccionGateway;
@@ -26,6 +28,7 @@ public class FondosUseCase {
     private final TransaccionGateway transaccionGateway;
     private final UsuarioGateway usuarioGateway;
     private final MailGateway mailGateway;
+    private final NotificacionGateway notificacionGateway;
 
     public Transaccion suscribir(Transaccion transaccion) throws Exception {
         log.info("Inicio la suscripcion a un fondo");
@@ -119,6 +122,7 @@ public class FondosUseCase {
                 fondo.getNombre(),
                 true
         );
+        guardarNotificacion(usuario, fondo, TipoTransaccion.SUSCRIPCION.getTipo());
         mailGateway.sendMail(email);
     }
     private void enviarEmailCancelarSuscripcon(Usuario usuario, Fondo fondo) throws Exception {
@@ -129,7 +133,16 @@ public class FondosUseCase {
                 .userName(usuario.getNombre())
                 .isSuscripcion(false)
                 .build();
+        guardarNotificacion(usuario, fondo, TipoTransaccion.CANCELACION.getTipo());
         mailGateway.sendMail(email);
     }
+    private void guardarNotificacion(Usuario usuario, Fondo fondo, String tipo) throws Exception {
+        Notificacion notificacion = Notificacion.builder()
+                .fondoId(fondo.getFondoId())
+                .clienteId(usuario.getId())
+                .tipo(tipo)
+                .build();
+        Notificacion notificacion1 = notificacionGateway.save(notificacion);
 
+    }
 }

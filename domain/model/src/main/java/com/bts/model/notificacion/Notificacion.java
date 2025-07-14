@@ -19,5 +19,5 @@ public class Notificacion {
 
     private String tipo;
 
-    private String mensaje;
+    private String fondoId;
 }
