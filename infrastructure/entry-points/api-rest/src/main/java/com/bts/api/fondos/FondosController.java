@@ -10,22 +10,26 @@ import com.bts.model.transaccion.Transaccion;
 import com.bts.usecase.fondos.FondosUseCase;
 import com.bts.usecase.transaccion.TransaccionUseCase;
 import io.micrometer.core.ipc.http.HttpSender;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 @RestController
-@RequestMapping(value = "/api/fondos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/fondos", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class FondosController {
 
     private final FondosUseCase fondosUseCase;
     private final TransaccionUseCase transaccionUseCase;
 
     @PostMapping("/suscribir")
+    @PreAuthorize("hasAnyAuthority('CLIENTE')")
     public ResponseEntity<?> suscribir(@Valid @RequestBody SuscribirFondoRequest suscribirFondoRequest) throws Exception {
 
         Transaccion guardarTransaccion = Transaccion.builder()
@@ -40,6 +44,7 @@ public class FondosController {
     }
 
     @PostMapping("/cancelar")
+    @PreAuthorize("hasAnyAuthority('CLIENTE')")
     public ResponseEntity<?> cancelar(@Valid @RequestBody CancelarFondoRequest cancelarFondoRequest) throws Exception {
         Transaccion transaccion = Transaccion.builder()
                 .fondoId(cancelarFondoRequest.fondoId())
@@ -51,11 +56,13 @@ public class FondosController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('CLIENTE')")
     public ResponseEntity<?> obtenerFondos(){
         return ResponseEntity.ok(fondosUseCase.obtenerFondos());
     }
 
     @GetMapping("/historial/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENTE')")
     public ResponseEntity<?> obtenerFondosHistorial(@PathVariable("id") String id,
                                                     @RequestParam(name = "page", defaultValue = "0") int page,
                                                     @RequestParam(name = "size", defaultValue = "10") int size,

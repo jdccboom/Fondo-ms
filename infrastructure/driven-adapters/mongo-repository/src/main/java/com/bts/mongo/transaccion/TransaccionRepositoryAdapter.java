@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -41,12 +42,13 @@ public class TransaccionRepositoryAdapter extends AdapterOperations<Transaccion,
                             ? Sort.by(pageRequests.getSort())
                             : Sort.unsorted()
             );
-            Page<TransaccionDocument> transaccionDocuments = repository.findByTransaccionIdOrClienteIdOrTipoOrFondoIdAllIgnoreCase(
-                    filters.getTransaccionId(),
-                    filters.getClienteId(),
-                    filters.getTipo(),
-                    filters.getFondoId(),
-                    pageable);
+            Page<TransaccionDocument> transaccionDocuments = repository.buscarTransacciones(
+                    Optional.ofNullable(filters.getTransaccionId()).orElse(".*"),
+                    Optional.ofNullable(filters.getClienteId()).orElse(".*"),
+                    Optional.ofNullable(filters.getTipo()).orElse(".*"),
+                    Optional.ofNullable(filters.getFondoId()).orElse(".*"),
+                    pageable
+            );
 
             ListTransaccionDTO listMovieDTO = ListTransaccionDTO.builder()
                     .transacciones(transaccionDocuments.map(this::toEntity).toList())

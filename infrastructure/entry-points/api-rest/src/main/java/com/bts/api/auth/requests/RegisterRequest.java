@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public record RegisterRequest(
     @NotBlank(message = "El nombre no puede estar vacío")
-    String name,
+    String nombre,
 
     @Email
     @NotBlank(message = "El correo electrónico no puede estar vacío")

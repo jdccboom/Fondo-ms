@@ -4,7 +4,7 @@ import com.bts.api.auth.requests.LoginRequest;
 import com.bts.api.auth.requests.RegisterRequest;
 import com.bts.api.auth.response.LoginResponse;
 import com.bts.api.auth.response.UserDetail;
-import com.bts.model.usuario.RoleType;
+import com.bts.model.usuario.RolTipo;
 import com.bts.model.usuario.Usuario;
 import com.bts.usecase.auth.AuthenticateUseCase;
 import jakarta.validation.Valid;
@@ -36,17 +36,17 @@ public class AuthenticateController {
 
         Usuario usuario = authenticateUseCase.save(
                 Usuario.builder()
-                .nombre(request.name())
+                .nombre(request.nombre())
                 .email(request.email())
                 .password(request.password())
-                .rol(RoleType.Client.getName())
+                .rol(RolTipo.Client.getName())
                 .build()
         );
 
         return ResponseEntity.ok(
                 UserDetail.builder()
                         .id(usuario.getId())
-                        .name(usuario.getNombre())
+                        .nombre(usuario.getNombre())
                         .email(usuario.getEmail())
                         .build()
         );

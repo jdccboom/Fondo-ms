@@ -1,6 +1,6 @@
 package com.bts.api.auth.response;
 
-import com.bts.model.usuario.RoleType;
+import com.bts.model.usuario.RolTipo;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,8 +9,8 @@ import lombok.Data;
 public class UserDetail {
 
     private String id;
-    private String name;
+    private String nombre;
     private String email;
-    private RoleType role;
+    private RolTipo rol;
 
 }

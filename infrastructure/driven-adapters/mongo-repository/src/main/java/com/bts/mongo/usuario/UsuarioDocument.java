@@ -23,8 +23,8 @@ public class UsuarioDocument {
     @Id
     private String id;
 
-    @Field("name")
-    private String name;
+    @Field("nombre")
+    private String nombre;
 
     @Field("email")
     private String email;
@@ -32,19 +32,19 @@ public class UsuarioDocument {
     @Field("password")
     private String password;
 
-    @Field("role")
-    private String role;
+    @Field("rol")
+    private String rol;
 
-    @Field("createdAt")
-    private LocalDateTime createdAt;
+    @Field("fechaCreacion")
+    private LocalDateTime fechaCreacion;
 
-    @Field("active")
-    private Boolean active;
+    @Field("activo")
+    private Boolean activo;
 
-    @Field("availableBalance")
-    private BigDecimal availableBalance;
+    @Field("saldoDisponible")
+    private BigDecimal saldoDisponible;
 
-    @Field("notificationPreference")
-    private String notificationPreference;
+    @Field("notificacionPreferencia")
+    private String notificacionPreferencia;
 
 }

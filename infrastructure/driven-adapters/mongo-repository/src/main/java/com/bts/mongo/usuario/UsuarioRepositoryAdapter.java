@@ -7,6 +7,9 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Repository
 public class UsuarioRepositoryAdapter extends AdapterOperations<Usuario, UsuarioDocument, String, UsuarioDBRepository>
  implements UsuarioGateway
@@ -20,13 +23,17 @@ public class UsuarioRepositoryAdapter extends AdapterOperations<Usuario, Usuario
 
     @Override
     public Usuario register(Usuario usuario) {
+        usuario.setActivo(Boolean.TRUE);
+        usuario.setFechaCreacion(LocalDateTime.now());
+        usuario.setNotificacionPreferencia("EMAIL");
+        usuario.setSaldoDisponible(BigDecimal.valueOf(500000));
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return toEntity(repository.save(toData(usuario)));
     }
 
     @Override
     public Usuario validatePassword(String email, String password) throws Exception {
-        Usuario usuario = toEntity(repository.findByEmailAndActiveTrue(email));
+        Usuario usuario = toEntity(repository.findByEmailAndActivoTrue(email));
 
         if( !passwordEncoder.matches(password, usuario.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
@@ -37,6 +44,6 @@ public class UsuarioRepositoryAdapter extends AdapterOperations<Usuario, Usuario
 
     @Override
     public boolean existByEmail(String email) {
-        return repository.existsByEmailAndActiveTrue(email);
+        return repository.existsByEmailAndActivoTrue(email);
     }
 }

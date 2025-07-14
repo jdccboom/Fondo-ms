@@ -1,339 +1,138 @@
+# 🏦 Plataforma de Gestión de Fondos – BTG Pactual
+
+Prueba técnica para el cargo de **Ingeniero de Desarrollo Back End**. Esta aplicación permite a los clientes gestionar sus fondos de inversión de forma autónoma, brindando funcionalidades de suscripción, cancelación, historial de transacciones y notificaciones vía correo electrónico o SMS.
 
 ---
 
-# **Sistema de Gestión de Pedidos para E-commerce**
-Una aplicación en **Spring Boot** para la gestión de pedidos, productos y usuarios en un comercio electrónico. Este sistema proporciona **APIs RESTful** para manejar operaciones básicas de e-commerce.
+## 📌 Funcionalidades
 
-## **Tecnologías utilizadas**
+- ✅ Suscribirse a un fondo de inversión.
+- ✅ Cancelar una suscripción activa.
+- ✅ Consultar el historial de transacciones.
+- ✅ Notificaciones automáticas por email o SMS.
+- ✅ Seguridad con JWT y manejo de roles.
+- ✅ Despliegue automatizado con AWS CloudFormation.
 
-- **Java 17**
-- **Spring Boot 3.3.4**
-- **PostgreSQL**
-- **JWT para autenticación**
-- **Gradle**
+---
 
-## **Requisitos previos**
+## 🧱 Tecnologías Usadas
 
-- **JDK 17** o superior
-- **PostgreSQL**
-- **Docker** (opcional)
+| Componente        | Tecnología                    |
+|-------------------|-------------------------------|
+| Lenguaje          | Java 17                       |
+| Framework         | Spring Boot 3.x               |
+| Base de Datos     | MongoDB                       |
+| Seguridad         | Spring Security + JWT         |
+| Arquitectura      | Hexagonal                     |
+| Testing           | JUnit 5, Mockito              |
+| Despliegue        | AWS EC2, AWS CloudFormation   |
+| Notificaciones    | Email / Simulado SMS          |
+| Documentación API | Swagger (springdoc-openapi)   |
 
-## **Configuración e instalación**
+---
 
-### **Configuración de la base de datos**
+## 📂 Estructura del Proyecto
 
-Crea una base de datos en PostgreSQL:
-
-```sql
-CREATE DATABASE ecommerce;
 ```
 
-### **Configuración de la aplicación**
+ └── application/        # Casos de uso (Capa de aplicación)
+     └── resources/
+         ├── application.yml
+         └── data.js           # Datos de prueba para MongoDB
+ ├── domain/             # Entidades y lógica de negocio
+ └── infrastructure/     # Repositorios, servicios externos (Adaptadores de salida)
+```
 
-Clona el repositorio:
+---
+
+## 🔐 Seguridad
+
+- Autenticación mediante JWT (`/auth/login`)
+- Roles definidos:
+    - `CLIENTE`: Accede a sus fondos y transacciones.
+    - `ADMIN`: Accede a todas las transacciones.
+- Contraseñas encriptadas con BCrypt.
+- Protección de rutas vía `@PreAuthorize` y filtros de seguridad.
+
+---
+
+## 🧪 Pruebas
+
+- Pruebas unitarias para servicios, validadores y casos de uso.
+- Pruebas de integración para endpoints REST.
+- Cobertura de validaciones de negocio como saldo insuficiente, fondo inexistente, etc.
+
+---
+
+## 🚀 Despliegue en AWS
+
+La infraestructura puede desplegarse con AWS CloudFormation:
 
 ```bash
-git clone <repository-url>
-cd ecommerce-system
+aws cloudformation deploy \
+  --template-file deployment/btg-app.yml \
+  --stack-name btg-backend \
+  --capabilities CAPABILITY_NAMED_IAM
 ```
 
-Configura la conexión a la base de datos en `src/main/resources/application.properties`:
+Servicios usados:
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce
-spring.datasource.username=tu_usuario
-spring.datasource.password=tu_contraseña
+- EC2 para la aplicación Spring Boot.
+- DocumentDB o MongoDB en EC2.
+- SNS/SES para notificaciones.
+- Variables de entorno: `MONGO_URI`, `JWT_SECRET`, etc.
+
+---
+
+## 🧪 Datos de Prueba
+
+Puedes insertar datos iniciales usando MongoDB shell o Compass:
+
+```js
+// Ver archivo: src/resources/data.js
 ```
 
-Compila la aplicación:
+Incluye:
 
+- 3 usuarios con saldo inicial. (contraseña de los usarios = Maria100#)
+- 5 fondos de inversión.
+- 1 transacción de ejemplo.
+
+---
+
+## 📬 Endpoints REST
+
+| Método | Ruta                          | Descripción                              | Autenticación |
+|--------|-------------------------------|------------------------------------------|----------------|
+| POST   | `/auth/login`                 | Iniciar sesión y obtener JWT             | ❌             |
+| GET    | `/api/fondos/list`            | Obtener fondos disponibles               | ✅ (CLIENTE)   |
+| POST   | `/api/fondos/suscribir`       | Suscripción a un fondo                   | ✅ (CLIENTE)   |
+| POST   | `/api/fondos/cancelar`        | Cancelar suscripción                     | ✅ (CLIENTE)   |
+| GET    | `/api/fondos/historial/{id}`  | Historial del cliente                    | ✅ (CLIENTE)   |
+| GET    | `/api/admin/transacciones/all`| Ver todas las transacciones              | ✅ (ADMIN)     |
+
+---
+
+## 💻 Ejecución local
+
+### 🔧 Requisitos
+- Java 17
+- MongoDB local (o remoto)
+- Maven
+
+### ▶️ Ejecutar el proyecto
 ```bash
-./gradlew build
-```
-
-Ejecuta la aplicación:
-
-```bash
-./gradlew bootRun
-```
-
-La aplicación estará disponible en **[http://localhost:8080](http://localhost:8080)**
-
----
-
-## **Documentación de la API**
-
-### **Gestión de Usuarios**
-
-#### **Registrar un usuario**, (usar para obtener el token).
-
-**POST** `/api/users`  
-**Content-Type:** `application/json`
-
-```json
-{
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
-    "address": "Calle Principal 123",
-    "password": "100nmm#H"
-}
-```
-
-**Respuesta:**
-
-```json
-{
-    "id": 1,
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
-    "password": "password",
-    "address": "Calle Principal 123",
-    "token": "token"
-}
-```
-
-#### **Obtener un usuario**
-
-**GET** `/api/users/{id}`
-
-**Respuesta:**
-
-```json
-{
-    "id": 1,
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
-    "password": "password",
-    "address": "Calle Principal 123",
-    "token": "token"
-}
+./mvnw spring-boot:run
 ```
 
 ---
 
-### **Gestión de Productos**
+## 🧠 Reglas de Negocio
 
-#### **Crear un producto**
-
-**POST** `/api/movies`  
-**Content-Type:** `application/json`
-
-```json
-{
-    "name": "Teléfono Inteligente",
-    "description": "Último modelo de smartphone",
-    "price": 699.99,
-    "stockQuantity": 50
-}
-```
-
-**Respuesta:**
-
-```json
-{
-    "id": 1,
-    "name": "Teléfono Inteligente",
-    "description": "Último modelo de smartphone",
-    "price": 699.99,
-    "stockQuantity": 50
-}
-```
-
-#### **Obtener todos los productos**
-
-**GET** `/api/movies`
-
-**Respuesta:**
-
-```json
-[
-    {
-        "id": 1,
-        "name": "Teléfono Inteligente",
-        "description": "Último modelo de smartphone",
-        "price": 699.99,
-        "stockQuantity": 50
-    }
-]
-```
-
-#### **Actualizar un producto**
-
-**PUT** `/api/movies/{id}`  
-**Content-Type:** `application/json`
-
-```json
-{
-    "name": "Teléfono Inteligente",
-    "description": "Descripción actualizada",
-    "price": 649.99,
-    "stockQuantity": 45
-}
-```
-
-#### **Eliminar un producto**
-
-**DELETE** `/api/movies/{id}`
-
----
-
-### **Gestión de Pedidos**
-
-#### **Crear un pedido**
-
-**POST** `/api/orders`  
-**Content-Type:** `application/json`
-
-```json
-{
-    "userId": 1,
-    "items": [
-        {
-            "productId": 1,
-            "quantity": 2
-        }
-    ]
-}
-```
-
-**Respuesta:**
-
-```json
-{
-  "id": 0,
-  "userResponse": {
-    "userId": "string",
-    "name": "string",
-    "email": "string",
-    "password": "string",
-    "address": "string",
-    "active": true
-  },
-  "items": [
-    {
-      "id": 0,
-      "orderId": 0,
-      "movie": {
-        "productId": 0,
-        "name": "string",
-        "description": "string",
-        "price": 0,
-        "stockQuantity": 0,
-        "isActive": true
-      },
-      "quantity": 0
-    }
-  ],
-  "status": "PENDING",
-  "totalAmount": 0
-}
-```
-
-#### **Obtener un pedido**
-
-**GET** `/api/orders/{id}`
-
-**Respuesta:**
-
-```json
-{
-  "id": 0,
-  "userResponse": {
-    "userId": "string",
-    "name": "string",
-    "email": "string",
-    "password": "string",
-    "address": "string",
-    "active": true
-  },
-  "items": [
-    {
-      "id": 0,
-      "orderId": 0,
-      "movie": {
-        "productId": 0,
-        "name": "string",
-        "description": "string",
-        "price": 0,
-        "stockQuantity": 0,
-        "isActive": true
-      },
-      "quantity": 0
-    }
-  ],
-  "status": "PENDING",
-  "totalAmount": 0
-}
-```
-
-#### **Actualizar el estado de un pedido**
-
-**PUT** `/api/orders/{id}/status`  
-**Content-Type:** `application/json`
-
-```json
-{
-    "status": "PROCESSING"
-}
-```
-
----
-
-## **Soporte para Docker**
-
-### **Construir la imagen de Docker**
-
-```bash
-docker build -t ecommerce-system .
-```
-
----
-
-## **Manejo de errores**
-
-La API utiliza los siguientes códigos de estado HTTP:
-
-- **200**: Éxito
-- **400**: Solicitud incorrecta
-- **401**: No autorizado
-- **404**: No encontrado
-- **500**: Error interno del servidor
-
-**Ejemplo de respuesta de error:**
-
-```json
-{
-    "timestamp": "2024-02-11T10:00:00Z",
-    "status": 400,
-    "error": "Bad Request",
-    "message": "Message error",
-    "path": "/api/movies"
-}
-```
-
----
-
-## **Pruebas**
-
-Para ejecutar las pruebas:
-
-```bash
-./gradlew test
-```
-
-La aplicación incluye:
-
-- **Pruebas unitarias** para servicios y controladores.
-
----
-
-## **Seguridad**
-
-La aplicación utiliza **JWT** para autenticación.  
-Incluye el token en el encabezado `Authorization`:
-
-```http
-Authorization: Bearer <tu-token>
-```
+- Cada cliente inicia con COP $500.000.
+- Fondos tienen monto mínimo de suscripción.
+- Si no hay saldo suficiente, se bloquea la operación.
+- Al cancelar, el monto se reintegra al saldo del cliente.
+- Cada transacción tiene un ID único.
 
 ---

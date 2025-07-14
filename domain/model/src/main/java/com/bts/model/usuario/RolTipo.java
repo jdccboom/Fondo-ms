@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum RoleType {
+public enum RolTipo {
     Admin("ADMIN"), Client("CLIENTE");
 
     private final String name;
